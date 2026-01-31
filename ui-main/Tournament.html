@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>GameLaunch - Tournaments Hub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D4AF37", // Gold accent from image
+                        secondary: "#4ADE80", // Neon green from logo
+                        "background-light": "#f3f4f6",
+                        "background-dark": "#0f1115",
+                        "card-dark": "#1a1d23",
+                        "border-dark": "#2d323a"
+                    },
+                    fontFamily: {
+                        display: ["Orbitron", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2d323a;
+            border-radius: 10px;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-sans min-h-screen">
+    <!-- Mobile Menu Overlay -->
+    <div class="lg:hidden fixed inset-0 bg-black/80 z-50 hidden" id="mobileMenuOverlay">
+        <div class="absolute right-0 top-0 h-full w-64 bg-card-dark border-l border-white/10 p-6">
+            <div class="flex justify-between items-center mb-8">
+                <span class="font-display font-bold text-xl tracking-wider text-white">Menu</span>
+                <button class="p-2 text-white" id="closeMobileMenu">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <nav class="flex flex-col gap-4">
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="index.html">Home</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="community.html">Community</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-primary pl-4 text-primary" href="tournaments.html">Tournaments</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="learning.html">Learning</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="launchpad.html">Launchpad</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="profile.html">Profile</a>
+            </nav>
+        </div>
+    </div>
+
+    <nav class="sticky top-0 z-40 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-border-dark px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-black">
+                    <span class="material-icons">sports_esports</span>
+                </div>
+                <span class="font-display font-bold text-xl tracking-wider text-secondary">GameLaunch</span>
+            </div>
+            <div class="hidden lg:flex items-center gap-6">
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="index.html">Home</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="community.html">Community</a>
+                <a class="text-sm font-medium text-primary border-b-2 border-primary pb-1" href="tournaments.html">Tournaments</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="learning.html">Learning</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="launchpad.html">Launchpad</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="profile.html">Profile</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4 border-r border-border-dark pr-6">
+                <button class="p-1 hover:text-primary transition-colors"><span class="material-icons">notifications</span></button>
+                <button class="p-1 hover:text-primary transition-colors"><span class="material-icons">mail</span></button>
+                <button class="p-1 hover:text-primary transition-colors"><span class="material-icons">forum</span></button>
+                <button class="p-1 hover:text-primary transition-colors"><span class="material-icons">settings</span></button>
+            </div>
+            <div class="flex items-center gap-3 cursor-pointer group">
+                <div class="text-right">
+                    <p class="text-xs font-semibold leading-tight">My Profile</p>
+                    <p class="text-[10px] text-slate-400">Level 42</p>
+                </div>
+                <img alt="Profile" class="w-8 h-8 rounded-full border border-primary group-hover:scale-110 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDpa7vc0OM1qhmTSnNDBEpvGutGNn_G9lhpfr-RnkQ2WeH0MNN4vdtaCN9Ujbof2b1-R8jwSXKxR-yxnHf-RFxDPz_iKESnnp8R_FrfVZOHK0VeU3Si77IOtUhKRfdXUR9F4y0xDpo9QTK3THt0U2vUc5tJLWAURmNKsa4ETeQ7pKl_pTofqIt2yz-QU7XoOJHXB2W7n7WLMqsyrAKu0Y5omvsvi0AuEoAR6252ZS3jpDED9IHYnzFfbA5uUvvWo5z9WNWm7NdjWjo"/>
+                <span class="material-icons text-xs">expand_more</span>
+            </div>
+            <!-- Mobile menu button -->
+            <button class="lg:hidden p-2 text-slate-500 hover:text-primary" id="mobileMenuButton">
+                <span class="material-icons">menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-[1440px] mx-auto p-6 flex flex-col lg:flex-row gap-6">
+        <aside class="w-full lg:w-72 flex-shrink-0 space-y-6">
+            <div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-border-dark p-5">
+                <h3 class="text-primary font-display text-sm font-bold uppercase tracking-widest mb-4">Filters</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label class="text-xs font-semibold text-slate-500 uppercase mb-3 block">Game Genre</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors">
+                                <input checked="" class="rounded border-border-dark bg-transparent text-primary focus:ring-primary" type="checkbox"/>
+                                <span class="text-sm">Battle Royale</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors">
+                                <input class="rounded border-border-dark bg-transparent text-primary focus:ring-primary" type="checkbox"/>
+                                <span class="text-sm">MOBA</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors">
+                                <input class="rounded border-border-dark bg-transparent text-primary focus:ring-primary" type="checkbox"/>
+                                <span class="text-sm">FPS Shooter</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors">
+                                <input class="rounded border-border-dark bg-transparent text-primary focus:ring-primary" type="checkbox"/>
+                                <span class="text-sm">Racing</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-500 uppercase mb-3 block">Region</label>
+                        <select class="w-full bg-slate-50 dark:bg-background-dark border border-gray-200 dark:border-border-dark rounded-lg text-sm p-2.5 focus:ring-primary focus:border-primary">
+                            <option>Africa (Global)</option>
+                            <option>Europe</option>
+                            <option>North America</option>
+                            <option>Asia Pacific</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-500 uppercase mb-3 block">Entry Fee</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors">
+                                <input class="border-border-dark bg-transparent text-primary focus:ring-primary" name="fee" type="radio"/>
+                                <span class="text-sm">Free Entry</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors">
+                                <input class="border-border-dark bg-transparent text-primary focus:ring-primary" name="fee" type="radio"/>
+                                <span class="text-sm">Under $10</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors">
+                                <input class="border-border-dark bg-transparent text-primary focus:ring-primary" name="fee" type="radio"/>
+                                <span class="text-sm">Professional ($50+)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <button class="w-full py-3 bg-slate-100 dark:bg-background-dark border border-gray-200 dark:border-border-dark rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-primary hover:text-black transition-all">
+                        Reset All Filters
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-border-dark p-5">
+                <h3 class="text-primary font-display text-sm font-bold uppercase tracking-widest mb-4">Top Players</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="text-slate-500 font-bold text-xs">1</span>
+                            <img alt="Rank 1" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_9rZng2T6cXfy-4CwkzePb1L6NUEOKYY-HWYMTNcizYPCAV1cUCN-u_aq7cybs0t2jv0z_u6JZfjQprKIlzfe7ff6d48won0pj2R0xgDsPpwT4wqK3jkG27IXzjl3w84ZnMycycA0WnSNje5AJf9qZfyFCEFLmTiVfz3w0H2PUg9fK1SpUU7kwANHJviljzGONeWMUynILqQdq9hh4bm9cuqb2WUFx_lpw4PZWXMYceUjtDZHD5vIwVfdg7wX8YtiDHq0fhiRmrfA"/>
+                            <span class="text-sm font-semibold">KingKayo</span>
+                        </div>
+                        <span class="material-icons text-primary text-sm">emoji_events</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="text-slate-500 font-bold text-xs">2</span>
+                            <img alt="Rank 2" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2WJSG2lJWbMc6WSpWFz-kAu1OWUsZxwC6jSh-nWOwR-cEJKC0zJyf9ck3Qt3_XuofZdPfyc4NG6MP4JBhhwV0RoQEMgW7IeKPueHOWmlvDmmgQ6W8EP2w8I0Ro6Tfbsqpe3uCHCcWhiF7dhlCfrwIzlwE8-an93QJ9p1V63oDCXEAVnoHht7pliu7WXHqusJEJlO-mSgmMYSzqdXeA0zttyEY4laf4V056S4wOlvysQq9F10at_vXcv7gVljBXJ0HXEadzY7pgNz6"/>
+                            <span class="text-sm font-semibold">ZeeBlast</span>
+                        </div>
+                        <span class="material-icons text-slate-400 text-sm">emoji_events</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="text-slate-500 font-bold text-xs">3</span>
+                            <img alt="Rank 3" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0uaYDKDNdl84tePxrqwHdkC6DTKrKYcPunhpACf6-1Ydf3dj3McWkBYMOIgbljqdTI4QHa6xBoUDopnSe8XMtlGeusjylLrrQNKf1MGAzYHrXqb8C2kmttAoC17gy7wkvBskaLu14GmlJpnQl90g2fH9RdxGY4RZnMAM52ScsT2SVnE6DtarEnQ5P8s9gURPiG9zJ5Z9Fq1OPyzDEvRiVYyuflNqyifUjWb0wc7VEdvS8b7G-bH67SG60-10KKynWmK_faWOA42rW"/>
+                            <span class="text-sm font-semibold">NalaPro</span>
+                        </div>
+                        <span class="material-icons text-amber-700 text-sm">emoji_events</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <section class="flex-1 space-y-6">
+            <div class="relative rounded-2xl overflow-hidden bg-black h-80 group shadow-2xl">
+                <img alt="Featured Tournament" class="absolute inset-0 w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKO-QvXJY5azHrqYTOqxl4GkEPPZYr7rSsn8hvOUdzgYiFqKCx1waw3WXZeXWfT6Rk2GUAIgkPSlicHaMQtkBFLrqudhk0xHiu0bDUAS69ftQeTAF-f4kNOE9eeNSKBQ9ReyWrpk9Ev12GpvnRgBR1ZjP77_dP27e8ybYSf45MqhHYMa72kEn-c5K5NkjhW7UUcNSIt0g9oTSfBUh1gSq3a9N3c_E5vdNBgHWWqPvErQIWXVXiiiip_O8Go57Tos6KJZvfOC-RVpu5"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent"></div>
+                <div class="relative h-full flex flex-col justify-center px-10">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-red-600 text-[10px] font-bold px-2 py-1 rounded animate-pulse">LIVE EVENT</span>
+                        <span class="text-primary text-sm font-semibold uppercase tracking-widest">Africa Gamers Cup</span>
+                    </div>
+                    <h1 class="font-display text-4xl lg:text-5xl font-bold mb-4 uppercase tracking-tighter">Savannah Showdown</h1>
+                    <p class="text-slate-300 max-w-lg mb-6">Join the largest competitive event of the season. Compete with top tier players and win your share of the massive prize pool.</p>
+                    <div class="flex flex-wrap items-center gap-6">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Starts in</span>
+                            <span class="text-2xl font-display font-bold text-white tracking-widest">02:15:08</span>
+                        </div>
+                        <div class="flex flex-col border-l border-white/20 pl-6">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Prize Pool</span>
+                            <span class="text-2xl font-display font-bold text-primary tracking-widest">$2,000</span>
+                        </div>
+                        <button class="ml-auto bg-primary text-black font-bold px-8 py-3 rounded-lg glow-hover transition-all transform hover:-translate-y-1 active:scale-95">
+                            Register Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-display text-xl font-bold uppercase tracking-wide">Upcoming Tournaments</h2>
+                    <div class="flex gap-2">
+                        <button class="p-2 bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded hover:bg-primary hover:text-black transition-colors">
+                            <span class="material-icons text-sm">grid_view</span>
+                        </button>
+                        <button class="p-2 bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded hover:bg-primary hover:text-black transition-colors">
+                            <span class="material-icons text-sm">list</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-xl overflow-hidden hover:border-primary/50 transition-all group">
+                        <div class="relative h-40 overflow-hidden">
+                            <img alt="CyberStreet" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhIt3xha_v7opgFkqJr-C6Rr3gpAeGXfLfTlb_cglNhCa2T9EzpNZHxy5X4xBZdfv55alNriuT3if7zMeuy9ggLyi4irxS2gvLpRNHH3A_PvAgXqNkF4yD3QlU4OOHQrs1cxgXAejzovWUUjb6P_6xUzlMiohcVMewEeKrfw_vHwxMRh_yF1laOQWhq5z9mKcStpCqtYQSuJJ84wW3CL9SSTWyb7atxl2TFB3k0-GentocoXH-mqf15tS7d9Q7DT5f5Qet_Ti2hGBC"/>
+                            <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold">120 SLOTS LEFT</div>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">CyberStreet League</h3>
+                                    <p class="text-xs text-slate-400 flex items-center gap-1">
+                                        <span class="material-icons text-[14px]">sports_esports</span> Racing • 1v1
+                                    </p>
+                                </div>
+                                <span class="bg-secondary/10 text-secondary text-[10px] px-2 py-1 rounded font-bold">FREE</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-5 py-3 border-y border-border-dark">
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Prize</p>
+                                    <p class="text-sm font-bold text-primary">$500</p>
+                                </div>
+                                <div class="text-center border-l border-border-dark pl-4">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Region</p>
+                                    <p class="text-sm font-bold">Global</p>
+                                </div>
+                                <div class="text-center border-l border-border-dark pl-4">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Time</p>
+                                    <p class="text-sm font-bold">Tomorrow</p>
+                                </div>
+                            </div>
+                            <button class="w-full py-2.5 bg-slate-100 dark:bg-background-dark border border-gray-200 dark:border-border-dark rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-primary hover:text-black transition-all">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-xl overflow-hidden hover:border-primary/50 transition-all group">
+                        <div class="relative h-40 overflow-hidden">
+                            <img alt="Mystic Falls" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR7tBwaQsYQiOj2r3--40AGrdJmQcz9VEvZX--uoLj4ZeMpC401vfEQfopeAwmqmBkifDzmI-ziCtv-xocIt4Us0YiyyrQLFIG1nQr-Gc6hUzSkiheRYxo9cGqQ6SzHFZ3te_Q4qaIRuddqktLIrrSOp1lViMWvgOGyAsO6ojz-GZBVwBZawtDNDdYOcDFrzqt1gen-kdevoURz8xsw2NhpPXcfB7MsRKXhBcpyZBQoYcf9s3bd1SkkB6hO2DFg4l2VQ4WiIO2rJ_w"/>
+                            <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold">8 SLOTS LEFT</div>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">Mystic Falls Arena</h3>
+                                    <p class="text-xs text-slate-400 flex items-center gap-1">
+                                        <span class="material-icons text-[14px]">shield</span> MOBA • 5v5
+                                    </p>
+                                </div>
+                                <span class="bg-primary/10 text-primary text-[10px] px-2 py-1 rounded font-bold">$10 ENTRY</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-5 py-3 border-y border-border-dark">
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Prize</p>
+                                    <p class="text-sm font-bold text-primary">$1,200</p>
+                                </div>
+                                <div class="text-center border-l border-border-dark pl-4">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Region</p>
+                                    <p class="text-sm font-bold">EU/AF</p>
+                                </div>
+                                <div class="text-center border-l border-border-dark pl-4">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Time</p>
+                                    <p class="text-sm font-bold">Sun, 18:00</p>
+                                </div>
+                            </div>
+                            <button class="w-full py-2.5 bg-primary text-black rounded-lg font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-primary/20">
+                                Register Team
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-xl overflow-hidden hover:border-primary/50 transition-all group">
+                        <div class="relative h-40 overflow-hidden">
+                            <img alt="Safari Quest" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmVV0XOgfR6IICqyxFtog_5Yz6wmZRrbYluVlmZeyaEbSD2ApHVT6HXyV5gXl9LBJu2X15kLm_CbH41po9lfotqAlgSCjaAo33MAQvEVgV1WR7SYdV1b99ln4kSM0jHMvDSuiK1SL6n88Z_w7SKzZJAut-9f7XazxGwHkLWqB8f4XF1icltR9A-OxoyiNFTEWo7VhJEDNx8S7CgBz7jwhK7t6AiD0ySscufpYYXZgR1CkF891YyKJqA_ZnUlaVMuoL9_IfCJITpwmG"/>
+                            <div class="absolute top-2 right-2 bg-red-600 px-2 py-1 rounded text-[10px] font-bold">FULL</div>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">Safari Quest Blitz</h3>
+                                    <p class="text-xs text-slate-400 flex items-center gap-1">
+                                        <span class="material-icons text-[14px]">explore</span> Survival • Solo
+                                    </p>
+                                </div>
+                                <span class="bg-secondary/10 text-secondary text-[10px] px-2 py-1 rounded font-bold">FREE</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-5 py-3 border-y border-border-dark">
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Prize</p>
+                                    <p class="text-sm font-bold text-primary">$250</p>
+                                </div>
+                                <div class="text-center border-l border-border-dark pl-4">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Region</p>
+                                    <p class="text-sm font-bold">Africa</p>
+                                </div>
+                                <div class="text-center border-l border-border-dark pl-4">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold">Time</p>
+                                    <p class="text-sm font-bold">Ended</p>
+                                </div>
+                            </div>
+                            <button class="w-full py-2.5 bg-slate-200 dark:bg-background-dark/50 text-slate-500 cursor-not-allowed border border-gray-200 dark:border-border-dark rounded-lg font-bold text-xs uppercase tracking-widest">
+                                Tournament Closed
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-border-dark p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-display text-lg font-bold uppercase tracking-wide">Learning Hub</h3>
+                        <div class="flex gap-1">
+                            <span class="w-2 h-2 rounded-full bg-primary"></span>
+                            <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+                            <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <a href="learning.html" class="space-y-3 group cursor-pointer">
+                            <div class="aspect-square bg-slate-100 dark:bg-background-dark rounded-lg overflow-hidden relative">
+                                <img alt="Dev Basics" class="w-full h-full object-cover group-hover:scale-110 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKeYqEaJumnkE9e4kVa5CvQegl0BaumBbt_Zd0FahH8vliYcyFOU2BDC4ydF3FxWwKPbE4Uep9y0Ls_sWMxxQFgiLw2o4y7E2GvtwgLqjn_Pvk03I4CLyht9OKQTt-zX-0Vwx-ZIPSv12prae5mJSZhZtc-K2lvh432GiaJmkeLOH9PCDJGJ3khnF95L3N7IySzqagkVMdUwdQq5tckOHEVNLZDA6MsFquWIZwMrkeRvT4bF8B66PWdsV9ZAs7hsdsl-QLyWQSupbD"/>
+                            </div>
+                            <p class="text-[11px] font-bold leading-tight uppercase group-hover:text-primary transition-colors">Game Dev Basics</p>
+                        </a>
+                        <a href="learning.html" class="space-y-3 group cursor-pointer">
+                            <div class="aspect-square bg-slate-100 dark:bg-background-dark rounded-lg overflow-hidden relative">
+                                <img alt="Streaming Tips" class="w-full h-full object-cover group-hover:scale-110 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjqWvUr3vdZPuVTXMOv5_08fYXCRu590ZDToEpt_pIV-dDEhmcwRhHlRyq4ih9QyWaS7fCrTxGXzAc8aO8IzXcnww-JIvFFXNH5x7AM58GiS37jeodJNTR39LO9gQnvepIP_rPRJ3Jvsys4FN7l8grzMUIHWZ4ee1npaz0MHx4MVccTpm8FuYvbEk2Hoe6iaiCZ38r2fe2Ozb3dU18EV59IpNhdfPLs8MEmyNSJz6tlXeIXGo7FMBBSrOaCrgO682X4b7Acv7P8AKD"/>
+                            </div>
+                            <p class="text-[11px] font-bold leading-tight uppercase group-hover:text-primary transition-colors">Streaming &amp; Esports Tips</p>
+                        </a>
+                        <a href="learning.html" class="space-y-3 group cursor-pointer">
+                            <div class="aspect-square bg-slate-100 dark:bg-background-dark rounded-lg overflow-hidden relative">
+                                <img alt="Monetization" class="w-full h-full object-cover group-hover:scale-110 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl9Y2KAZvpqJCi-kE4GEzo_iYfTKe0vkyxuFXi2Vr_aOHnwsx_zuq7LDqxuzcoXfPDA5S-zPHUyIgA8y-nfXR-Rb6eg1ApU94ZxtS-joCHQHPMUhxDHep2zaluWwmBErIWnE7bsxyyZuCcyCFb5Zer_HG1cRxDE1swGOV72j5J8tiI1dWOu_rmxKCm6R2YRTSA47lBKDzIdIQ0Ua5TZlMsSL4z5-QvJqJ1YRcMsdq6PANEKQP-fJsSgDrhATG3CmEfDf8LpbMFa1z3"/>
+                            </div>
+                            <p class="text-[11px] font-bold leading-tight uppercase group-hover:text-primary transition-colors">Monetize Your Game</p>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-border-dark p-6 relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-display text-lg font-bold uppercase tracking-wide">Game Launchpad</h3>
+                        <span class="bg-secondary/20 text-secondary text-[10px] font-bold px-2 py-0.5 rounded uppercase">New Release</span>
+                    </div>
+                    <div class="flex gap-6 items-center">
+                        <div class="w-1/2 rounded-lg overflow-hidden border border-border-dark">
+                            <img alt="Legend of the Nile" class="w-full h-40 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxqS51gPc9C8U9klcH4J_a8dPpU-26y8VMWwXUb2pKA_XCnZm0UiwFZGHUa1scgUU-cnuJ-vDOpddR46IhPC8NdteivIUBINMzOBNwJy52IN01nV4N4P6Qd-KBYv42SbjGPb4yV3pqX3RF9e3aN_ws0NQTI99ZbA3vnvAzku5Orp0RrSoLYdtF4p9Nk3quk4VXFF_UcUpdHw9OtxcnkJ6z6klSNwBG92W_P_R2fZsZCO4IyVS0DQTlNxzRpzcHqgQojtEVhUnCPefE"/>
+                        </div>
+                        <div class="w-1/2 space-y-4">
+                            <div>
+                                <h4 class="font-display text-xl font-bold leading-tight">Legend of the Nile</h4>
+                                <p class="text-xs text-slate-400 mt-1">Adventure • Indie RPG</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="launchpad.html" class="flex-1 bg-secondary text-black text-[10px] font-bold py-2 rounded uppercase hover:brightness-110 transition-all text-center">Play Demo</a>
+                                <a href="launchpad.html" class="flex-1 border border-border-dark text-[10px] font-bold py-2 rounded uppercase hover:bg-white/5 transition-all text-center">Support Dev</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="mt-8 border-t border-gray-200 dark:border-border-dark bg-white dark:bg-card-dark px-6 py-4">
+        <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-slate-500">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span>Server Status: Optimal</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="material-icons text-sm">groups</span>
+                    <span>142,503 Players Online</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <a class="hover:text-primary" href="#">Terms of Service</a>
+                <a class="hover:text-primary" href="#">Privacy Policy</a>
+                <a class="hover:text-primary" href="launchpad.html">Developer Portal</a>
+                <div class="flex items-center gap-3 ml-4">
+                    <span class="material-icons text-sm hover:text-primary cursor-pointer">facebook</span>
+                    <span class="material-icons text-sm hover:text-primary cursor-pointer">language</span>
+                    <span class="material-icons text-sm hover:text-primary cursor-pointer">smart_display</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            
+            if (mobileMenuButton && mobileMenuOverlay) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenuOverlay.classList.remove('hidden');
+                });
+                
+                closeMobileMenu.addEventListener('click', function() {
+                    mobileMenuOverlay.classList.add('hidden');
+                });
+                
+                mobileMenuOverlay.addEventListener('click', function(e) {
+                    if (e.target === mobileMenuOverlay) {
+                        mobileMenuOverlay.classList.add('hidden');
+                    }
+                });
+                
+                // Close mobile menu when clicking on a link
+                const mobileLinks = document.querySelectorAll('#mobileMenuOverlay nav a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenuOverlay.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

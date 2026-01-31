@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>GameLaunch - Indie Game Launchpad</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Rajdhani:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D4AF37", // Gold accent
+                        secondary: "#82EEFD", // Neon Cyan accent
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0a0a0c",
+                        "card-dark": "#16161a",
+                        "card-border": "#2d2d33"
+                    },
+                    fontFamily: {
+                        display: ["Rajdhani", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(22, 22, 26, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .gold-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+        .neon-glow:hover {
+            box-shadow: 0 0 20px rgba(130, 238, 253, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-sans selection:bg-primary selection:text-black">
+    <!-- Mobile Menu Overlay -->
+    <div class="lg:hidden fixed inset-0 bg-black/80 z-50 hidden" id="mobileMenuOverlay">
+        <div class="absolute right-0 top-0 h-full w-64 bg-card-dark border-l border-white/10 p-6">
+            <div class="flex justify-between items-center mb-8">
+                <span class="font-display text-xl font-bold text-white">Menu</span>
+                <button class="p-2 text-white" id="closeMobileMenu">
+                    <span class="material-icons-outlined">close</span>
+                </button>
+            </div>
+            <nav class="flex flex-col gap-4">
+                <a class="text-lg font-medium py-3 border-l-4 border-primary pl-4 text-primary" href="index.html">Home</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="community.html">Community</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="tournaments.html">Tournaments</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="learning.html">Learning</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-primary pl-4 text-primary" href="launchpad.html">Launchpad</a>
+                <a class="text-lg font-medium py-3 border-l-4 border-transparent pl-4 hover:text-primary transition-colors" href="profile.html">Profile</a>
+            </nav>
+        </div>
+    </div>
+
+    <nav class="sticky top-0 z-40 glass-effect border-b border-white/5 px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-10">
+            <div class="flex items-center gap-2 cursor-pointer">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <span class="material-icons-outlined text-black font-bold">rocket_launch</span>
+                </div>
+                <span class="text-2xl font-display font-bold tracking-tight text-white">Game<span class="text-primary">Launch</span></span>
+            </div>
+            <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a class="hover:text-white transition-colors" href="index.html">Home</a>
+                <a class="hover:text-white transition-colors" href="community.html">Community</a>
+                <a class="hover:text-white transition-colors" href="tournaments.html">Tournaments</a>
+                <a class="hover:text-white transition-colors" href="learning.html">Learning</a>
+                <a class="text-primary border-b-2 border-primary pb-1" href="launchpad.html">Launchpad</a>
+                <a class="hover:text-white transition-colors" href="profile.html">Profile</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4 text-slate-400 border-r border-white/10 pr-6 mr-2">
+                <span class="material-icons-outlined cursor-pointer hover:text-white">notifications</span>
+                <span class="material-icons-outlined cursor-pointer hover:text-white">mail</span>
+                <span class="material-icons-outlined cursor-pointer hover:text-white">forum</span>
+                <span class="material-icons-outlined cursor-pointer hover:text-white">settings</span>
+            </div>
+            <div class="flex items-center gap-3 cursor-pointer group">
+                <div class="text-right">
+                    <p class="text-xs text-slate-400">Welcome back,</p>
+                    <p class="text-sm font-bold text-white group-hover:text-primary transition-colors">Alex_Dev</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-yellow-600 border-2 border-white/10"></div>
+                <span class="material-icons-outlined text-slate-400 text-sm">expand_more</span>
+            </div>
+            <!-- Mobile menu button -->
+            <button class="lg:hidden p-2 text-slate-400 hover:text-white" id="mobileMenuButton">
+                <span class="material-icons-outlined">menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <section class="mb-12 relative rounded-3xl overflow-hidden group">
+            <div class="absolute inset-0">
+                <img alt="Legend of the Nile Game" class="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqKv-A-YgPyglP2y1O3cRUzYKpUEtVFyCSz-bNVf8AVqjJSokNdCA9nDd6xnwObs2kqW6AvWG8E6tOzaCP4DY2D1Vn3DgOyKk4XLcg1Lg8Uh2_mK5lhYzYms3BL1Le5h_3V9l1CxLwHNm3p6ZBUcluKhB-xX-n-igSXnxJYb_JwkSn6OvgVN6gXaixib5ZvB-rqyB2EUz8DvWzpnBec1MMGbiG_uDD_uXp6HijPCrDIkN5NnavDhKPVV-u8htrtjXsjRI4AudB51o-"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/40 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-background-dark via-transparent to-transparent"></div>
+            </div>
+            <div class="relative h-[500px] flex flex-col justify-end p-12 max-w-2xl">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="px-3 py-1 bg-primary text-black text-[10px] font-bold uppercase tracking-widest rounded-full">Game of the Month</span>
+                    <span class="px-3 py-1 bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest rounded-full backdrop-blur-md">New Release</span>
+                </div>
+                <h1 class="text-6xl font-display font-bold text-white mb-4 leading-tight">Legend of <br/><span class="text-primary italic">the Nile</span></h1>
+                <p class="text-slate-300 text-lg mb-8 line-clamp-2">Embark on an epic journey through ancient sands. A strategic RPG where your choices shape the fate of empires. Experience stunning visuals and a deep crafting system.</p>
+                <div class="flex items-center gap-4">
+                    <button class="px-8 py-4 bg-primary hover:bg-yellow-500 text-black font-bold rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-lg gold-glow">
+                        <span class="material-icons-outlined">play_circle_filled</span>
+                        Play Demo
+                    </button>
+                    <button class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl backdrop-blur-md border border-white/20 transition-all flex items-center gap-2">
+                        <span class="material-icons-outlined">favorite</span>
+                        Support Dev
+                    </button>
+                    <div class="ml-auto flex items-center gap-6">
+                        <div class="text-center">
+                            <p class="text-primary font-bold text-xl font-display">4.8k</p>
+                            <p class="text-slate-500 text-[10px] uppercase font-bold">Supporters</p>
+                        </div>
+                        <div class="text-center border-l border-white/10 pl-6">
+                            <p class="text-white font-bold text-xl font-display">94%</p>
+                            <p class="text-slate-500 text-[10px] uppercase font-bold">Rating</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-12 gap-8">
+            <div class="col-span-12 lg:col-span-3 space-y-8">
+                <div class="glass-effect rounded-2xl p-6 border-white/5">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-display font-bold text-lg text-white">Trending Projects</h3>
+                        <span class="material-icons-outlined text-slate-500 cursor-pointer">more_horiz</span>
+                    </div>
+                    <div class="space-y-5">
+                        <div class="flex items-center gap-3 group cursor-pointer">
+                            <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-800">
+                                <img alt="Project 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2EUr2bptvt9ts63bqQ-Wq2nGEtaAT5Ex_yRLyoudSQO_0yOyVG1vL0ObBZ8UOX7_DEj96r0WwCm2Vi0wigoXakP6KWMmKtlx66wadj3JBMSGheF7c0j5zdhHO2JgmVCPhATISdKOz8XUNejteEW_qOwj3ktdX-6G1pxWYit54EvdJGtTsjYCd7aZUHnb73yaPhr_32yWAGH74RfjiCaXKgm5jN-pE9x4E9iYgcOrkOI0-I6lTsansgMkODtQw8_nJhHreudQHHQ6o"/>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-sm font-bold text-slate-200 group-hover:text-primary transition-colors">Safari Quest</h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] text-slate-500">Adventure</span>
+                                    <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                                    <span class="text-[10px] text-primary">85% Vote</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 group cursor-pointer">
+                            <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-800">
+                                <img alt="Project 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD85StZymo5-hVOp1RWC_Hf-dgChzLyIfRAh8iDieAyhHLbSxRe2WgYs8IXzBiScAzuFNmQttCN0E8wJynwxpRg7wTLrfbX49dCM6vV7Fg44gJWTkjSmjxV6mtpaOKzXtT6Ev_A6OORNW61CGFgqw7FOORQbbFnPM-owQdh5y369Oy5oSnk6AyljeuJKTj8o-qzB25jpAatLDXBbI0dIVLO5RetMMKFC6sJ5CNP-2u1fWAN193TxOD3TygOC_5m_5Gmp8IcVfrIZ727"/>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-sm font-bold text-slate-200 group-hover:text-primary transition-colors">Cyber Street</h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] text-slate-500">Cyberpunk</span>
+                                    <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                                    <span class="text-[10px] text-primary">72% Vote</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 group cursor-pointer">
+                            <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-800">
+                                <img alt="Project 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtK5pp_uppF7adp43gc8r_De04pUDIesLkhuHty4jk8-jYL_1LFBfvBFlWFEmWwTeu6WYpuQWm6n96ickw3DLVJe-mT46CpgYI8mNRxwM6WJlTwVhaAbbFLu-1hE0DNxEF4i39ML3fJytj5BQ4s4V0W2sQY4GJ62misAZHrQFzRu1Ql-3Xz7Er-wyfP2fXQHT1q-d-Uqvj8CP0n0QsMc4swfzFYBoqpUO_VJAEHNUgcKi9pWfwz7HH8z93dIeX2KGqZUPCASK5xG3q"/>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-sm font-bold text-slate-200 group-hover:text-primary transition-colors">Mystic Falls</h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] text-slate-500">Fantasy</span>
+                                    <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                                    <span class="text-[10px] text-primary">91% Vote</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 py-2 text-xs font-bold text-slate-400 hover:text-white border border-white/5 rounded-lg transition-colors">View All Trending</button>
+                </div>
+
+                <div class="glass-effect rounded-2xl p-6 border-white/5">
+                    <h3 class="font-display font-bold text-lg text-white mb-6">Top Dev Supporters</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-primary font-bold w-4">1</span>
+                                <div class="w-8 h-8 rounded-full bg-slate-700"></div>
+                                <span class="text-sm text-slate-300">KingKayo</span>
+                            </div>
+                            <span class="material-icons-outlined text-primary text-sm">emoji_events</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-slate-500 font-bold w-4">2</span>
+                                <div class="w-8 h-8 rounded-full bg-slate-700"></div>
+                                <span class="text-sm text-slate-300">ZeeBlast</span>
+                            </div>
+                            <span class="material-icons-outlined text-slate-500 text-sm">emoji_events</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-slate-600 font-bold w-4">3</span>
+                                <div class="w-8 h-8 rounded-full bg-slate-700"></div>
+                                <span class="text-sm text-slate-300">NalaPro</span>
+                            </div>
+                            <span class="material-icons-outlined text-slate-600 text-sm">emoji_events</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-9 space-y-8">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-display font-bold text-white flex items-center gap-3">
+                        <span class="material-icons-outlined text-secondary">explore</span>
+                        Explore Upcoming Indies
+                    </h2>
+                    <div class="flex items-center gap-3">
+                        <select class="bg-card-dark text-slate-400 text-sm border-white/10 rounded-lg px-4 focus:ring-primary focus:border-primary">
+                            <option>Most Voted</option>
+                            <option>Latest Release</option>
+                            <option>Crowdfunding</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="group glass-effect rounded-2xl overflow-hidden border-white/5 hover:border-primary/30 transition-all duration-300">
+                        <div class="relative h-56 overflow-hidden">
+                            <img alt="Neon Velocity" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfHJrRHLVoYqgNoyGn0LFrjTaXUTaJ9KSuU8BH7aHQMHPXqTQJUCCwFq4sDu3apZaDIYyAiU2uXXjYRRzXoJYlvsdfcI1ygtT-TEXzr3DMFhYQ1ciIk40fRzQ29lieSKIqYGJeCRcbiGr9xyikR9q6q1DCakPBiRbS0_FeepyNjUFnzt6ai05urBqtSLHerBh3TFfPemm4J4xfaG8dP_IfNFQB_k7B3uiieCvA2yzyUPjNueIrKWlh3wVszJC-JNek2mzCkKZSym2J"/>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <button class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-black">
+                                    <span class="material-icons-outlined">play_arrow</span>
+                                </button>
+                            </div>
+                            <div class="absolute top-4 left-4">
+                                <span class="px-2 py-1 bg-secondary text-black text-[9px] font-extrabold uppercase rounded">VOTE NOW</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h3 class="text-xl font-display font-bold text-white group-hover:text-primary transition-colors">Neon Velocity</h3>
+                                    <p class="text-xs text-slate-500 mb-4">Developed by <span class="text-slate-300">Luminous Studios</span></p>
+                                </div>
+                                <div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded">
+                                    <span class="material-icons-outlined text-primary text-xs">star</span>
+                                    <span class="text-xs font-bold text-white">4.9</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-6 line-clamp-2">High-octane racing in a procedurally generated synth-wave landscape. Physics-based drifting and customizable cars.</p>
+                            <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-700"></div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-600"></div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-500 flex items-center justify-center text-[10px] text-white font-bold">+12</div>
+                                </div>
+                                <button class="px-5 py-2 bg-white/5 hover:bg-white/10 text-white text-xs font-bold rounded-lg border border-white/10 transition-colors flex items-center gap-2">
+                                    <span class="material-icons-outlined text-sm">how_to_reg</span>
+                                    Vote for Dev
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group glass-effect rounded-2xl overflow-hidden border-white/5 hover:border-primary/30 transition-all duration-300">
+                        <div class="relative h-56 overflow-hidden">
+                            <img alt="Shadow Weaver" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5h7HSBpUc-AEl6xRgY8Sg0nayhmI_SHT0tDp_Aq1dCYMKkXRWPW7jKnKiJpVqJdbj1VzAcJNcGV0jFAfeqdpss3YbgmeFJYkUj04W0mIWR2TFpibFYe2l9SpHN89QRiMxzX1CxnSmQJPVM11R45KTWqonU3KptyhzWwp7Rt9wpJy0KCOy5GQ5cmtT3KQL8wZBKQYbmw_V7Cuo6I-6e-IKH9xdHESb2aJVv-YyDAHJ6dkxlV59jMD-OSwTqdC2lcQg5CbgFoBjnNaJ"/>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <button class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-black">
+                                    <span class="material-icons-outlined">play_arrow</span>
+                                </button>
+                            </div>
+                            <div class="absolute top-4 left-4">
+                                <span class="px-2 py-1 bg-primary text-black text-[9px] font-extrabold uppercase rounded">80% FUNDED</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h3 class="text-xl font-display font-bold text-white group-hover:text-primary transition-colors">Shadow Weaver</h3>
+                                    <p class="text-xs text-slate-500 mb-4">Developed by <span class="text-slate-300">Midnight Games</span></p>
+                                </div>
+                                <div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded">
+                                    <span class="material-icons-outlined text-primary text-xs">star</span>
+                                    <span class="text-xs font-bold text-white">4.7</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-6 line-clamp-2">A dark-fantasy platformer where light is your only weapon. Manipulate shadows to solve puzzles and defeat cosmic horrors.</p>
+                            <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-700"></div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-600"></div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-500 flex items-center justify-center text-[10px] text-white font-bold">+45</div>
+                                </div>
+                                <button class="px-5 py-2 bg-white/5 hover:bg-white/10 text-white text-xs font-bold rounded-lg border border-white/10 transition-colors flex items-center gap-2">
+                                    <span class="material-icons-outlined text-sm">how_to_reg</span>
+                                    Vote for Dev
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group glass-effect rounded-2xl overflow-hidden border-white/5 hover:border-primary/30 transition-all duration-300">
+                        <div class="relative h-56 overflow-hidden">
+                            <img alt="Bot Protocol" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeRiQb8x_CJ-nqn_n9-LeSr8Amoz-_sv20pj91b49PajCF28AF_RS2n82iueanwlY-jasC2wV-pZCkjI3qwEarv5Cj3rWsd8ge5I8Qa94-BraxVm_yWyquMNcAzHH7QzeVT-y1FFzesmtGGJB0GG87RpLEzMcWwVZy9g1wYWIt1GStgKF1Y5vzWvpPpHRfKJJ53Fx84DcPth19z9M-JF8uEwNyBuCFItWz6ZLDe6IukwXkZi8dIv1PZqCPIX1Jq2YLIbYl4IbSDy4i"/>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <button class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-black">
+                                    <span class="material-icons-outlined">play_arrow</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h3 class="text-xl font-display font-bold text-white group-hover:text-primary transition-colors">Bot Protocol</h3>
+                                    <p class="text-xs text-slate-500 mb-4">Developed by <span class="text-slate-300">Neural Network</span></p>
+                                </div>
+                                <div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded">
+                                    <span class="material-icons-outlined text-primary text-xs">star</span>
+                                    <span class="text-xs font-bold text-white">4.5</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-6 line-clamp-2">Top-down tactical shooter with heavy emphasis on robot customization and AI team management. 4-player co-op.</p>
+                            <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-700"></div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-600"></div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-500 flex items-center justify-center text-[10px] text-white font-bold">+8</div>
+                                </div>
+                                <button class="px-5 py-2 bg-white/5 hover:bg-white/10 text-white text-xs font-bold rounded-lg border border-white/10 transition-colors flex items-center gap-2">
+                                    <span class="material-icons-outlined text-sm">how_to_reg</span>
+                                    Vote for Dev
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group glass-effect rounded-2xl overflow-hidden border-white/5 hover:border-primary/30 transition-all duration-300">
+                        <div class="relative h-56 overflow-hidden">
+                            <img alt="Pixel Frontier" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9R0Kxj9L0zVBYKLvFOOkw3TUE_ulPPqe-KksXH1lpmZ2OJKrE5iNd1UFm27NLY-580EcumbZJdE92gfvECoTJ4hITFSPJgFsqt05j6RLEysqYt4JqZMEtFqO5DDuGA1a9cA3nL1Y_GvYje_Xn5ytopqC88b12ee8dB0T7kpZtBYRuhv8i3JeDtDrlt5YfIVnNVurhP8tEkYqLu9mmdHhIBezk8YBHnnacD9neqK5B6SA67pbYgbv3wB90e8UIF2gv7Eq2a8rsbpSj"/>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <button class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-black">
+                                    <span class="material-icons-outlined">play_arrow</span>
+                                </button>
+                            </div>
+                            <div class="absolute top-4 left-4">
+                                <span class="px-2 py-1 bg-yellow-600 text-white text-[9px] font-extrabold uppercase rounded tracking-wider">TOP RATED</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h3 class="text-xl font-display font-bold text-white group-hover:text-primary transition-colors">Pixel Frontier</h3>
+                                    <p class="text-xs text-slate-500 mb-4">Developed by <span class="text-slate-300">Retro Vibe</span></p>
+                                </div>
+                                <div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded">
+                                    <span class="material-icons-outlined text-primary text-xs">star</span>
+                                    <span class="text-xs font-bold text-white">5.0</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-6 line-clamp-2">A love letter to 16-bit RPGs with modern mechanics. Explore a massive world with over 100 unique companions.</p>
+                            <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-700"></div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-600"></div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-card-dark bg-slate-500 flex items-center justify-center text-[10px] text-white font-bold">+156</div>
+                                </div>
+                                <button class="px-5 py-2 bg-white/5 hover:bg-white/10 text-white text-xs font-bold rounded-lg border border-white/10 transition-colors flex items-center gap-2">
+                                    <span class="material-icons-outlined text-sm">how_to_reg</span>
+                                    Vote for Dev
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center py-10 gap-4">
+                    <button class="px-10 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl transition-all">
+                        Load More Projects
+                    </button>
+                    <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Showing 4 of 128 indie projects</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-20 border-t border-white/5 bg-black/40 py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex flex-col items-center md:items-start gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                        <span class="material-icons-outlined text-[14px] text-black font-bold">rocket_launch</span>
+                    </div>
+                    <span class="text-xl font-display font-bold text-white">Game<span class="text-primary">Launch</span></span>
+                </div>
+                <p class="text-slate-500 text-sm max-w-xs text-center md:text-left">Empowering indie developers and building the future of gaming community.</p>
+            </div>
+            <div class="flex gap-12 text-sm">
+                <div class="space-y-4">
+                    <h5 class="font-bold text-white">Platform</h5>
+                    <ul class="text-slate-500 space-y-2">
+                        <li><a href="launchpad.html" class="hover:text-primary cursor-pointer transition-colors">Explore Games</a></li>
+                        <li><a href="tournaments.html" class="hover:text-primary cursor-pointer transition-colors">Tournaments</a></li>
+                        <li><a href="community.html" class="hover:text-primary cursor-pointer transition-colors">Developer Portal</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h5 class="font-bold text-white">Support</h5>
+                    <ul class="text-slate-500 space-y-2">
+                        <li class="hover:text-primary cursor-pointer transition-colors">Help Center</li>
+                        <li class="hover:text-primary cursor-pointer transition-colors">Privacy Policy</li>
+                        <li class="hover:text-primary cursor-pointer transition-colors">Contact Us</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 cursor-pointer transition-all">
+                    <span class="material-icons-outlined text-xl">discord</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 cursor-pointer transition-all">
+                    <span class="material-icons-outlined text-xl">twitter</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 cursor-pointer transition-all">
+                    <span class="material-icons-outlined text-xl">reddit</span>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 text-center text-slate-600 text-xs">
+            © 2024 GameLaunch Platform. All rights reserved. Built for the community.
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            
+            if (mobileMenuButton && mobileMenuOverlay) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenuOverlay.classList.remove('hidden');
+                });
+                
+                closeMobileMenu.addEventListener('click', function() {
+                    mobileMenuOverlay.classList.add('hidden');
+                });
+                
+                mobileMenuOverlay.addEventListener('click', function(e) {
+                    if (e.target === mobileMenuOverlay) {
+                        mobileMenuOverlay.classList.add('hidden');
+                    }
+                });
+                
+                // Close mobile menu when clicking on a link
+                const mobileLinks = document.querySelectorAll('#mobileMenuOverlay nav a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenuOverlay.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
